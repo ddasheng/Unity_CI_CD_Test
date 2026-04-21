@@ -11,7 +11,7 @@ namespace ns
     {
         public void OnClick()
         {
-            Debug.Log("111");
+            Debug.Log("123");
         }
     }
 }
