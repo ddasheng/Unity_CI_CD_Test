@@ -1,4 +1,4 @@
-name: Unity CI - Build Check
+name: Unity CI
 
 on:
   push:
@@ -6,12 +6,19 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - name: Build
-        uses: game-ci/unity-actions/build@main
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          buildTarget: android
-          playerArgs: -nographics -batchmode -quit
+          targetPlatform: android```
