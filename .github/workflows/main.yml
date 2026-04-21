@@ -14,4 +14,4 @@ jobs:
       - uses: game-ci/unity-activate@v2
 
       - name: Build
-        uses: game-ci/unity-actions/build@main
+        uses: game-ci/unity-actions/build@v2
