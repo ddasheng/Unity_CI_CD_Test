@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: game-ci/unity-actions/activate@v4
+      - uses: game-ci/unity-actions/activate@main
 
       - name: Build
-        uses: game-ci/unity-actions/build@v4
+        uses: game-ci/unity-actions/build@main
