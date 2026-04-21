@@ -1,4 +1,4 @@
-name: Unity CI
+name: Unity CI - Code Check Only
 
 on:
   push:
@@ -9,10 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+
+      - name: Cache Unity Library
+        uses: actions/cache@v3
         with:
-          lfs: true
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
 
       - name: Build
         uses: game-ci/unity-builder@v4
@@ -22,3 +27,5 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: Android
+          buildMethod: UnityEditor.BuildPlayerWindow.CustomBuildScript.Build          # 只检查代码编译，不真正输出APK
+          customBuildArguments: -nographics
