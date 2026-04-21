@@ -1,0 +1,42 @@
+name: Unity CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 第1步: 检出代码
+      - uses: actions/checkout@v4
+
+      # 第2步: 设置 Unity 许可证
+      - name: Activate Unity
+        uses: game-ci/unity-actions/activate@v4
+        with:
+          unityLicensing汝: true
+          unityVersion: 2022.3.0f1
+
+      # 第3步: 设置序列号（免费个人许可证）
+      - name: Configure Unity License
+        uses: game-ci/unity-actions/license@v4
+        with:
+          unitySerial: ${{ secrets.UNITY_SERIAL }}
+          unityUsername: ${{ secrets.UNITY_USERNAME }}
+          unityPassword: ${{ secrets.UNITY_PASSWORD }}
+
+      # 第4步: 执行打包
+      - name: Build Player
+        uses: game-ci/unity-actions/build-player@v4
+        with:
+          buildTarget: android
+          androidAppBundle: false
+          androidKeystoreName: user.keystore
+          androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
+          androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
+          androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
