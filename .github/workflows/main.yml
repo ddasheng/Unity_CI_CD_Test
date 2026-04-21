@@ -1,4 +1,4 @@
-name: Unity CI
+name: Unity CI - Code Check Only
 
 on:
   push:
@@ -9,12 +9,21 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      # 步骤1: 拉取代码
       - uses: actions/checkout@v4
 
-      # 步骤2: 激活 Unity 许可证
-      - uses: game-ci/unity-actions/activate@v4
+      - name: Cache Unity Library
+        uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
 
-      # 步骤3: 编译项目（只检查代码是否报错，不需要打包）
       - name: Build
-        uses: game-ci/unity-actions/build@v4
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: Android
