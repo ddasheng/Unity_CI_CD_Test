@@ -1,4 +1,4 @@
-name: Unity CI
+name: Unity CI - Build Check
 
 on:
   push:
@@ -11,7 +11,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: game-ci/unity-actions/activate@main
+      - name: Unity Version Check
+        uses: game-ci/unity-actions/version-check@main
+        with:
+          path: .
 
       - name: Build
         uses: game-ci/unity-actions/build@main
+        with:
+          buildTarget: android
+          playerArgs: -nographics -batchmode -quit
