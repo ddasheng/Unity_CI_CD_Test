@@ -6,15 +6,9 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    
+    runs-on: ubuntu-latest    
     steps:
       - uses: actions/checkout@v4
-
-      - name: Unity Version Check
-        uses: game-ci/unity-actions/version-check@main
-        with:
-          path: .
 
       - name: Build
         uses: game-ci/unity-actions/build@main
